@@ -15,11 +15,8 @@ namespace Forum.DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            IConfiguration appConfig =
-               new ConfigurationBuilder()
-               .AddJsonFile("appsettings.json", false, true).Build();
-            string dbConnnString = appConfig.GetConnectionString("ForumDb");
-            optionsBuilder.UseSqlServer(dbConnnString);
+            
+            optionsBuilder.UseSqlServer("Data Source=DESKTOP-PD7VO6A\\SQLEXPRESS;Initial Catalog=ForumDb;Integrated Security=True;");
 
         }
 
