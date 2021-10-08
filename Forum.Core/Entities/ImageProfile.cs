@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Forum.BL.Models
+namespace Forum.Core.Entities
 {
-    public class  ImageProfile
+    public class ImageProfile
     {
         [Key]
         public int ImageProfileID { get; set; }

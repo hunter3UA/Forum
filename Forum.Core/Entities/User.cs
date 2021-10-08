@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Forum.BL.Models
+namespace Forum.Core.Entities
 {
+    [Index(propertyNames: new string[] { nameof(EmailAddress), nameof(NickName) }, IsUnique = true)]
     public class User
     {
         [Key]
@@ -23,7 +25,7 @@ namespace Forum.BL.Models
         public Role Role { get; set; }
         [Required]
         public DateTime RegistredAt { get; set; }
-
+        public Topic[] UserTopics { get; set; }
         [Required]
         public bool IsEnabled { get; set; }
     }

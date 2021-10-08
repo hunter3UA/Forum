@@ -4,14 +4,16 @@ using Forum.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Forum.DAL.Migrations
 {
     [DbContext(typeof(ForumDbContext))]
-    partial class ForumDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211007153937_UpdateUser")]
+    partial class UpdateUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,7 +21,7 @@ namespace Forum.DAL.Migrations
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Forum.Core.Entities.File", b =>
+            modelBuilder.Entity("Forum.BL.Models.File", b =>
                 {
                     b.Property<long>("FileID")
                         .ValueGeneratedOnAdd()
@@ -27,11 +29,9 @@ namespace Forum.DAL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FileName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FilePath")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("MessageID")
@@ -44,7 +44,7 @@ namespace Forum.DAL.Migrations
                     b.ToTable("Files");
                 });
 
-            modelBuilder.Entity("Forum.Core.Entities.ImageProfile", b =>
+            modelBuilder.Entity("Forum.BL.Models.ImageProfile", b =>
                 {
                     b.Property<int>("ImageProfileID")
                         .ValueGeneratedOnAdd()
@@ -64,7 +64,7 @@ namespace Forum.DAL.Migrations
                     b.ToTable("ImageProfiles");
                 });
 
-            modelBuilder.Entity("Forum.Core.Entities.Message", b =>
+            modelBuilder.Entity("Forum.BL.Models.Message", b =>
                 {
                     b.Property<int>("MessageID")
                         .ValueGeneratedOnAdd()
@@ -101,7 +101,7 @@ namespace Forum.DAL.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("Forum.Core.Entities.Role", b =>
+            modelBuilder.Entity("Forum.BL.Models.Role", b =>
                 {
                     b.Property<int>("RoleID")
                         .ValueGeneratedOnAdd()
@@ -117,7 +117,7 @@ namespace Forum.DAL.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("Forum.Core.Entities.Topic", b =>
+            modelBuilder.Entity("Forum.BL.Models.Topic", b =>
                 {
                     b.Property<long>("TopicID")
                         .ValueGeneratedOnAdd()
@@ -136,7 +136,7 @@ namespace Forum.DAL.Migrations
                     b.ToTable("Topics");
                 });
 
-            modelBuilder.Entity("Forum.Core.Entities.User", b =>
+            modelBuilder.Entity("Forum.BL.Models.User", b =>
                 {
                     b.Property<int>("UserID")
                         .ValueGeneratedOnAdd()
@@ -145,7 +145,7 @@ namespace Forum.DAL.Migrations
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
@@ -177,9 +177,6 @@ namespace Forum.DAL.Migrations
 
                     b.HasIndex("RoleID");
 
-                    b.HasIndex("EmailAddress", "NickName")
-                        .IsUnique();
-
                     b.ToTable("Users");
                 });
 
@@ -198,24 +195,24 @@ namespace Forum.DAL.Migrations
                     b.ToTable("TopicUser");
                 });
 
-            modelBuilder.Entity("Forum.Core.Entities.File", b =>
+            modelBuilder.Entity("Forum.BL.Models.File", b =>
                 {
-                    b.HasOne("Forum.Core.Entities.Message", null)
+                    b.HasOne("Forum.BL.Models.Message", null)
                         .WithMany("Files")
                         .HasForeignKey("MessageID");
                 });
 
-            modelBuilder.Entity("Forum.Core.Entities.Message", b =>
+            modelBuilder.Entity("Forum.BL.Models.Message", b =>
                 {
-                    b.HasOne("Forum.Core.Entities.Message", null)
+                    b.HasOne("Forum.BL.Models.Message", null)
                         .WithMany("Answers")
                         .HasForeignKey("MessageID1");
 
-                    b.HasOne("Forum.Core.Entities.Topic", "Topic")
+                    b.HasOne("Forum.BL.Models.Topic", "Topic")
                         .WithMany()
                         .HasForeignKey("TopicID");
 
-                    b.HasOne("Forum.Core.Entities.User", "User")
+                    b.HasOne("Forum.BL.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID");
 
@@ -224,9 +221,9 @@ namespace Forum.DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Forum.Core.Entities.User", b =>
+            modelBuilder.Entity("Forum.BL.Models.User", b =>
                 {
-                    b.HasOne("Forum.Core.Entities.Role", "Role")
+                    b.HasOne("Forum.BL.Models.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleID");
 
@@ -235,20 +232,20 @@ namespace Forum.DAL.Migrations
 
             modelBuilder.Entity("TopicUser", b =>
                 {
-                    b.HasOne("Forum.Core.Entities.Topic", null)
+                    b.HasOne("Forum.BL.Models.Topic", null)
                         .WithMany()
                         .HasForeignKey("UserTopicsTopicID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Forum.Core.Entities.User", null)
+                    b.HasOne("Forum.BL.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UsersUserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Forum.Core.Entities.Message", b =>
+            modelBuilder.Entity("Forum.BL.Models.Message", b =>
                 {
                     b.Navigation("Answers");
 

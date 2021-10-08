@@ -1,4 +1,5 @@
-﻿using Forum.BL.Models;
+﻿
+using Forum.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Forum.BL.Models
+namespace Forum.Core.Entities
 {
     public class Role
     {

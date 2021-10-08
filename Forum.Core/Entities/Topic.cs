@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Forum.BL.Models
+namespace Forum.Core.Entities
 {
-    public class Topic
+    public class  Topic
     {
         [Key]
         public long TopicID { get; set; }
