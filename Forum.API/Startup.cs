@@ -1,4 +1,5 @@
 
+using Forum.BL.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,8 @@ namespace Forum.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Forum.API", Version = "v1" });
             });
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<PasswordService>();
             
         }
 

@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Forum.BL.DTOs;
+using Forum.Core.Entities;
 
 namespace Forum.BL.Mapping
 {
@@ -14,13 +11,14 @@ namespace Forum.BL.Mapping
             MapperConfiguration config = new MapperConfiguration(
                 cfg =>
                 {
-
-                }
-
-
-                );
+                    cfg.CreateMap<CreateUserDTO, User>();                  
+                    cfg.CreateMap<User, UserDTO>();
+                    cfg.CreateMap<UpdateUserDTO, User>();
+                   
+                });
             return config;
         }
+
     }
 }
 
