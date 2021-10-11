@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Forum.DAL.Migrations
 {
-    public partial class CreatingDb : Migration
+    public partial class CreateDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,7 +27,7 @@ namespace Forum.DAL.Migrations
                 {
                     RoleID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    RoleName = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,7 +40,9 @@ namespace Forum.DAL.Migrations
                 {
                     TopicID = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TopicName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TopicName = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -56,13 +58,12 @@ namespace Forum.DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NickName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Status = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: true),
-                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     RoleID = table.Column<int>(type: "int", nullable: true),
                     RegistredAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    TopicID = table.Column<long>(type: "bigint", nullable: true)
+                    IsEnabled = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -72,12 +73,6 @@ namespace Forum.DAL.Migrations
                         column: x => x.RoleID,
                         principalTable: "Roles",
                         principalColumn: "RoleID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Users_Topics_TopicID",
-                        column: x => x.TopicID,
-                        principalTable: "Topics",
-                        principalColumn: "TopicID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -118,13 +113,37 @@ namespace Forum.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TopicUser",
+                columns: table => new
+                {
+                    UserTopicsTopicID = table.Column<long>(type: "bigint", nullable: false),
+                    UsersUserID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TopicUser", x => new { x.UserTopicsTopicID, x.UsersUserID });
+                    table.ForeignKey(
+                        name: "FK_TopicUser_Topics_UserTopicsTopicID",
+                        column: x => x.UserTopicsTopicID,
+                        principalTable: "Topics",
+                        principalColumn: "TopicID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TopicUser_Users_UsersUserID",
+                        column: x => x.UsersUserID,
+                        principalTable: "Users",
+                        principalColumn: "UserID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Files",
                 columns: table => new
                 {
                     FileID = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MessageID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -159,14 +178,32 @@ namespace Forum.DAL.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Roles_RoleName",
+                table: "Roles",
+                column: "RoleName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Topics_TopicName",
+                table: "Topics",
+                column: "TopicName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TopicUser_UsersUserID",
+                table: "TopicUser",
+                column: "UsersUserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_EmailAddress_NickName",
+                table: "Users",
+                columns: new[] { "EmailAddress", "NickName" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleID",
                 table: "Users",
                 column: "RoleID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_TopicID",
-                table: "Users",
-                column: "TopicID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -178,16 +215,19 @@ namespace Forum.DAL.Migrations
                 name: "ImageProfiles");
 
             migrationBuilder.DropTable(
+                name: "TopicUser");
+
+            migrationBuilder.DropTable(
                 name: "Messages");
+
+            migrationBuilder.DropTable(
+                name: "Topics");
 
             migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Roles");
-
-            migrationBuilder.DropTable(
-                name: "Topics");
         }
     }
 }

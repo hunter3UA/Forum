@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Forum.Core.Entities
 {
@@ -25,7 +27,8 @@ namespace Forum.Core.Entities
         public Role Role { get; set; }
         [Required]
         public DateTime RegistredAt { get; set; }
-        public Topic[] UserTopics { get; set; }
+        [JsonIgnore]
+        public List<Topic> UserTopics { get; set; } = new List<Topic>();
         [Required]
         public bool IsEnabled { get; set; }
     }

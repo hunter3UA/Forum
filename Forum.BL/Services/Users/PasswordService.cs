@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace Forum.BL.Services
+namespace Forum.BL.Services.Users
 {
     public class PasswordService
     {
@@ -32,7 +32,7 @@ namespace Forum.BL.Services
                 return salt;
             }
 
-            public  class HashHMACSHA1
+            public class HashHMACSHA1
             {
                 public static int hash_lenght = 64;
                 public static int hash_iterations = 15;
@@ -108,3 +108,4 @@ namespace Forum.BL.Services
         }
     }
 }
+

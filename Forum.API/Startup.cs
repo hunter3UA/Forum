@@ -1,11 +1,14 @@
 
 using Forum.BL.Services;
+using Forum.BL.Services.Topics;
+using Forum.BL.Services.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 
 namespace Forum.API
 {
@@ -29,7 +32,9 @@ namespace Forum.API
             });
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<PasswordService>();
+            services.AddTransient<ITopicService, TopicService>();
             
+
         }
 
         

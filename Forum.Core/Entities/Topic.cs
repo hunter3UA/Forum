@@ -1,16 +1,26 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Forum.Core.Entities
 {
-    public class  Topic
+    [Index(nameof(TopicName),IsUnique =true)]
+    public class Topic
     {
         [Key]
         public long TopicID { get; set; }
         [Required]
         public string TopicName { get; set; }
-        public User[] Users { get; set; }
-
+        [Required]
+        [MaxLength(500)]
+        [MinLength(10)]
+        public string Description { get; set; }   
+        [Required]
+        public int CreatedBy { get; set; }
+        [JsonIgnore]
+        public List<User> Users { get; set; } = new List<User>();
         [Required]
         public DateTime CreatedAt { get; set; }
     }

@@ -1,4 +1,4 @@
-﻿using Forum.BL.DTOs;
+﻿using Forum.BL.DTOs.Users;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,3 +17,4 @@ namespace Forum.BL.Services
         Task<bool> UpdateUser(UpdateUserDTO updateUserDTO);
     }
 }
+

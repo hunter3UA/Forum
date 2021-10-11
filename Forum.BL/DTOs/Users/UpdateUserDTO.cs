@@ -1,4 +1,4 @@
-﻿namespace Forum.BL.DTOs
+﻿namespace Forum.BL.DTOs.Users
 {
     public class UpdateUserDTO
     {

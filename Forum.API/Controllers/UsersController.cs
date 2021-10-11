@@ -1,4 +1,4 @@
-﻿using Forum.BL.DTOs;
+﻿using Forum.BL.DTOs.Users;
 using Forum.BL.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
